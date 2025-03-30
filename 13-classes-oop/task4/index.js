@@ -29,10 +29,6 @@ class Dictionary {
 }
 
 class HardWordsDictionary extends Dictionary {
-    constructor(name) {
-        super(name);
-    }
-
     add(word, description) {
         if (this.words[word]) {
             return;
