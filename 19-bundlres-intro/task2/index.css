@@ -6,11 +6,12 @@ body {
 }
 
 h1 {
-    color: #333;
+    color: #3498db;
+    margin-bottom: 30px;
 }
 
 img {
-    max-width: 100%;
-    height: auto;
-    margin-top: 20px;
+    max-width: 300px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }

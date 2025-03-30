@@ -1,29 +1,32 @@
-import styles from 'rollup-plugin-styles';
-import image from '@rollup/plugin-image';
-import babel from '@rollup/plugin-babel';
-import serve from 'rollup-plugin-serve';
-import livereload from 'rollup-plugin-livereload';
+import styles from "rollup-plugin-styles";
+import image from "@rollup/plugin-image";
+import babel from "@rollup/plugin-babel";
+import serve from "rollup-plugin-serve";
+import livereload from "rollup-plugin-livereload";
+import generateHtmlTemplate from "rollup-plugin-generate-html-template";
 
 export default {
-    input: 'src/index.js',
+    input: "src/index.js",
     output: {
-        file: 'dist/bundle.js',
-        format: 'esm',
-        assetFileNames: "[name]-[hash][extname]",
+        file: "dist/bundle.js",
+        format: "iife",
     },
     plugins: [
         styles(),
         image(),
         babel({
-            presets: ['@babel/preset-env'],
-            exclude: 'node_modules/**',
-            babelHelpers: 'bundled'
+            babelHelpers: "bundled",
+            presets: ["@babel/preset-env"],
         }),
         serve({
             open: true,
+            contentBase: "dist",
             port: 3000,
-            contentBase: 'src',
         }),
-        livereload(),
+        livereload("dist"),
+        generateHtmlTemplate({
+            template: "src/index.html", // Файл-шаблон
+            target: "index.html", // Куда сохранить в dist
+        }),
     ],
 };

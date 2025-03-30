@@ -1,12 +1,12 @@
-import './index.css';
-import jsImage from '../assets/NulpBMmMmNQ.jpg';
+import "../index.css";
+import jsLogo from "../assets/js-logo.png";
 
-// Создаем элементы
-const title = document.createElement('h1');
-title.textContent = 'I love JavaScript';
-document.body.appendChild(title);
+const app = document.getElementById("app");
+const title = document.createElement("h1");
+const image = document.createElement("img");
 
-const img = document.createElement('img');
-img.src = jsImage;
-img.alt = 'JavaScript';
-document.body.appendChild(img);
+title.textContent = "I love JavaScript";
+image.src = jsLogo;
+
+app.appendChild(title);
+app.appendChild(image);
