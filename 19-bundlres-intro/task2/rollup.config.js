@@ -4,6 +4,9 @@ import babel from "@rollup/plugin-babel";
 import serve from "rollup-plugin-serve";
 import livereload from "rollup-plugin-livereload";
 import generateHtmlTemplate from "rollup-plugin-generate-html-template";
+// При установке пришлось задействовать --legacy-peer-deps
+// не мог установить, были баги, и предложил менеджер использовать эту опцию
+
 
 export default {
     input: "src/index.js",
