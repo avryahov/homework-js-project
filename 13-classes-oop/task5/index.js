@@ -1,23 +1,3 @@
-/*
-Вам сейчас необходимо создать 3 дочерних класса от класса Developer:
-
-JuniorDeveloper. Конструктор данного класса принимает 2 параметра: fullName и age.
-Вызовите конструктор родительского класса и передайте туда эти 2 параметра.
-
-В качестве 3-го у нас выступает position. Вам необходимо его указать по умолчанию.
-Напишите значение "Junior" в качестве 3-го параметра вызова родительского конструктора.
-Кроме этого, необходимо переопределить метод code(), чтобы он выводил в консоль строку: “Junior разработчик пишет код...”.
-Массив technologies должен содержать следующие технологии: 'HTML', 'CSS', 'JavaScript'.
-
-MiddleDeveloper. Проделайте ту же самую работу в конструкторе, что и в JuniorDeveloper.
-Только на место position передавайте значение "Middle". Метод code() у класса MiddleDeveloper должен выводить в консоль строку: “Middle-разработчик пишет код...”.
- Массив technologies должен содержать следующие технологии: 'HTML', 'CSS', 'JavaScript', ‘React’.
-
-SeniorDeveloper. Проделайте ту же самую работу в конструкторе, что и в JuniorDeveloper.
-Только на место position передавайте значение "Senior". Метод code() у класса SeniorDeveloper должен выводить в консоль строку: “Senior-разработчик пишет код...”.
-Массив technologies должен содержать следующие технологии: 'HTML', 'CSS', 'JavaScript', ‘React’, ‘NodeJS’.
-*/
-
 const Position = {
     JUNIOR: 'Junior',
     MIDDLE: 'Middle',
@@ -28,6 +8,9 @@ class Developer {
     constructor(fullName, age, position) {
         this.fullName = fullName;
         this.age = age;
+        if(!Object.values(Position).includes(position)) {
+            throw new Error('Position must be included in Position type');
+        }
         this.position = position;
         this.technologies = []
     }
@@ -39,6 +22,40 @@ class Developer {
         this.technologies.push(technology);
     }
 }
+
+class JuniorDeveloper extends Developer {
+    constructor(fullName, age) {
+        super(fullName, age, Position.JUNIOR);
+        this.technologies = ['HTML', 'CSS', 'JavaScript'];
+    }
+
+    code() {
+        console.log("Junior-разработчик пишет код...")
+    }
+}
+
+class MiddleDeveloper extends Developer {
+    constructor(fullName, age) {
+        super(fullName, age, Position.MIDDLE);
+        this.technologies = ['HTML', 'CSS', 'JavaScript', 'React'];
+    }
+
+    code() {
+        console.log("Middle-разработчик пишет код...")
+    }
+}
+
+class SeniorDeveloper extends Developer {
+    constructor(fullName, age) {
+        super(fullName, age, Position.SENIOR);
+        this.technologies = ['HTML', 'CSS', 'JavaScript', 'React', 'NodeJS'];
+    }
+
+    code() {
+        console.log("Senior-разработчик пишет код...")
+    }
+}
+
 
 const developer = new Developer("Alex", 34, Position.SENIOR);
 
