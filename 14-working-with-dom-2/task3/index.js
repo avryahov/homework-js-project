@@ -118,3 +118,78 @@ createTaskForm.addEventListener('submit', function(event) {
     const taskElement = createTaskElement(newTaskId, newTaskText);
     tasksList.append(taskElement);
 });
+
+
+function createDeleteModal() {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay modal-overlay_hidden';
+
+    const modal = document.createElement('div');
+    modal.className = 'delete-modal';
+
+    const question = document.createElement('p');
+    question.className = 'delete-modal__question';
+    question.textContent = 'Вы действительно хотите удалить эту задачу?';
+
+    const buttonsContainer = document.createElement('div');
+    buttonsContainer.className = 'delete-modal__buttons';
+
+    const cancelButton = document.createElement('button');
+    cancelButton.className = 'delete-modal__button';
+    cancelButton.textContent = 'Отмена';
+
+    const confirmButton = document.createElement('button');
+    confirmButton.className = 'delete-modal__button delete-modal__confirm-button';
+    confirmButton.textContent = 'Удалить';
+
+    buttonsContainer.append(cancelButton, confirmButton);
+    modal.append(question, buttonsContainer);
+    overlay.append(modal);
+
+    return overlay;
+}
+
+const body = document.querySelector('body');
+const deleteModal = createDeleteModal();
+body.appendChild(deleteModal);
+
+let taskIdToDelete = null;
+
+function openDeleteModal(taskId) {
+    taskIdToDelete = taskId;
+    deleteModal.classList.remove('modal-overlay_hidden');
+}
+
+function closeDeleteModal() {
+    deleteModal.classList.add('modal-overlay_hidden');
+    taskIdToDelete = null;
+}
+
+deleteModal.addEventListener('click', function(event) {
+    if (event.target.textContent === 'Отмена') {
+        closeDeleteModal();
+    } else if (event.target.textContent === 'Удалить') {
+        if (taskIdToDelete) {
+            const taskIndex = tasks.findIndex(task => task.id === taskIdToDelete);
+            if (taskIndex > -1) {
+                tasks.splice(taskIndex, 1);
+            }
+
+            const taskElement = document.querySelector(`[data-task-id="${taskIdToDelete}"]`);
+            if (taskElement) {
+                taskElement.remove();
+            }
+
+            closeDeleteModal();
+        }
+    }
+});
+
+tasksList.addEventListener('click', function(event) {
+    if (event.target.classList.contains('task-item__delete-button')) {
+        const taskItem = event.target.closest('.task-item');
+        const taskId = taskItem.dataset.taskId;
+
+        openDeleteModal(taskId);
+    }
+});
