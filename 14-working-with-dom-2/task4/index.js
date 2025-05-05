@@ -193,3 +193,28 @@ tasksList.addEventListener('click', function(event) {
         openDeleteModal(taskId);
     }
 });
+
+let isDarkTheme = false;
+
+function applyTheme() {
+    document.body.style.background = isDarkTheme ? '#24292E' : 'initial';
+
+    const taskItems = document.querySelectorAll('.task-item');
+    taskItems.forEach(taskItem => {
+        taskItem.style.color = isDarkTheme ? '#ffffff' : 'initial';
+    });
+
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => {
+        button.style.border = isDarkTheme ? '1px solid #ffffff' : 'none';
+    });
+}
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Tab') {
+        event.preventDefault(); // Отключаем стандартное поведение Tab (переход по полям)
+
+        isDarkTheme = !isDarkTheme;
+        applyTheme();
+    }
+});
