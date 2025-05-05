@@ -67,21 +67,42 @@ tasks.forEach(task => {
 const createTaskForm = document.querySelector('.create-task-block');
 const createTaskInput = document.querySelector('.create-task-block__input');
 
+function showErrorMessage(message) {
+    let errorBlock = createTaskForm.querySelector('.error-message-block');
+
+    if (!errorBlock) {
+        errorBlock = document.createElement('span');
+        errorBlock.className = 'error-message-block';
+        createTaskForm.appendChild(errorBlock);
+    }
+
+    errorBlock.textContent = message;
+}
+
+function hideErrorMessage() {
+    const errorBlock = createTaskForm.querySelector('.error-message-block');
+    if (errorBlock) {
+        errorBlock.remove();
+    }
+}
+
 createTaskForm.addEventListener('submit', function(event) {
-    event.preventDefault(); // отключаем стандартное поведение формы
+    event.preventDefault(); // Отключаем стандартное поведение формы
 
     const newTaskText = createTaskInput.value.trim();
 
     if (!newTaskText) {
-        alert('Введите текст задачи!');
+        showErrorMessage('Название задачи не должно быть пустым');
         return;
     }
 
     const isDuplicate = tasks.some(task => task.text.toLowerCase() === newTaskText.toLowerCase());
     if (isDuplicate) {
-        alert('Задача с таким текстом уже существует!');
+        showErrorMessage('Задача с таким названием уже существует.');
         return;
     }
+
+    hideErrorMessage();
 
     const newTaskId = Date.now().toString();
 
