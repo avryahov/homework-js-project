@@ -1,46 +1,47 @@
 const loader = document.getElementById("loader");
 const dataContainer = document.getElementById("data-container");
 
+const PHOTO_API_URL = "https://api.slingacademy.com/v1/sample-data/photos/";
 
-const LINK_USERS = "https://jsonplaceholder.typicode.com/users";
+const createPhotoElement = (photo) => {
+    const photoItem = document.createElement("li");
+    photoItem.className = "photo-item";
 
-const createUserElement = (text) => {
-    const userElement = document.createElement("li");
-    const userAnchorElement = document.createElement("a");
-    userAnchorElement.href = "#";
-    userAnchorElement.textContent = text;
-    userElement.append(userAnchorElement);
-    return userElement;
+    const img = document.createElement("img");
+    img.className = "photo-item__image";
+    img.src = photo.url;
+
+    const title = document.createElement("h3");
+    title.className = "photo-item__title";
+    title.textContent = photo.title;
+
+    photoItem.append(img, title);
+    return photoItem;
 };
 
-const getUsersByIds = (userIds) => {
-    loader.hidden = false;
+const toggleLoader = (show) => {
+    loader.hidden = !show;
+};
 
-    const requests = userIds.map(id => {
-        const input = `${LINK_USERS}/${id}`;
-        return fetch(input)
-    });
+const getFastestLoadedPhoto = (ids) => {
+    toggleLoader(true);
 
-    Promise.all(requests)
-        .then(responses => {
-            return Promise.all(
-                responses
-                    .filter((response) => response.ok)
-                    .map((response) => response.json())
-            );
-        })
-        .then(users => {
+    const requests = ids.map(id => fetch(`${PHOTO_API_URL}${id}`));
+
+    Promise.race(requests)
+        .then(response => response.json())
+        .then(data => data.photo)
+        .then(photo => {
             dataContainer.innerHTML = "";
-
-            users.forEach(user => {
-                const userElement = createUserElement(user.name);
-                dataContainer.append(userElement);
-            });
+            const photoElement = createPhotoElement(photo);
+            dataContainer.appendChild(photoElement);
         })
         .catch(error => {
-            console.error("Ошибка при получении пользователей:", error);
+            console.error("Не удалось загрузить фото:", error);
         })
-        .finally(loader.hidden = true)
+        .finally(() => {
+            toggleLoader(false);
+        });
 };
 
-getUsersByIds([5, 6, 2, 1]);
+getFastestLoadedPhoto([60, 12, 55]);
