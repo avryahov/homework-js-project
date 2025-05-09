@@ -1,10 +1,9 @@
-import { Component } from '../core/Component';
+import {Component} from '../core/Component';
 
-export class ListItem extends Component {
-  setup(props) {
-    this.$rootElement = document.createElement('div');
-    this.$rootElement.className = 'donate-item';
-
-    // ...
-  }
+export default class ListItem extends Component {
+    setup() {
+        this.$rootElement = document.createElement('div');
+        this.$rootElement.className = 'donate-item';
+        this.$rootElement.innerHTML = `${this.props.donation.timestamp} - <b>$${this.props.donation.amount}</b>`;
+    }
 }
