@@ -2,7 +2,7 @@ import {Component} from '../core/Component';
 import ListItem from './ListItem';
 
 export default class List extends Component {
-    setup() {
+    setup(props) {
         this.$rootElement = document.createElement('div');
         this.$rootElement.className = 'donates-container';
 
@@ -16,11 +16,14 @@ export default class List extends Component {
         this.$rootElement.appendChild(this.$listContainer);
     }
 
-    updateDonations(donations) {
+    updateDonations(donations, onDelete) {
         this.$listContainer.innerHTML = '';
 
         donations.forEach(donation => {
-            const item = new ListItem({donation}); // Передаём donation через props
+            const item = new ListItem({
+                donation,
+                onDelete
+            });
             this.$listContainer.appendChild(item.$rootElement);
         });
     }
